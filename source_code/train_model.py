@@ -16,5 +16,6 @@ y = df_role_resume['job_title']
 model = MultinomialNB()
 model.fit(x, y)
 
+os.makedirs("models", exist_ok=True)
 joblib.dump(model, 'models/naive_bayes_model.pkl')
 joblib.dump(vectorizer, 'models/tfidf_vectorizer.pkl')
