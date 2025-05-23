@@ -14,11 +14,11 @@ git clone https://github.com/Negar-Niksirat/cangrow2_final.git</pre>
 <pre>cd venvName\Scripts
  activate</pre>
 بعد از فعال‌سازی، نام محیط مجازی در ابتدای خط فرمان نمایش داده می‌شود.  
-3. اجرای فایل آموزش مدل  
+3.اجرای فایل آموزش مدل  
 به پوشه cangrow2_final بروید و اسکریپت آموزش مدل را اجرا کنید:  
 
 <pre>python -m source_code.train_model</pre>
-4. اجرای رابط کاربری  
+4.اجرای رابط کاربری  
 برای اجرای رابط گرافیکی برنامه با Streamlit، دستور زیر را وارد کنید:  
 
 <pre>streamlit run app.py</pre>
