@@ -18,7 +18,7 @@ git clone https://github.com/Negar-Niksirat/cangrow2_final.git</pre>
 به پوشه cangrow2_final بروید و اسکریپت آموزش مدل را اجرا کنید:  
 
 <pre>python -m source_code.train_model</pre>
-4. اجرای رابط کاربری
+4. اجرای رابط کاربری  
 برای اجرای رابط گرافیکی برنامه با Streamlit، دستور زیر را وارد کنید:  
 
 <pre>streamlit run app.py</pre>
