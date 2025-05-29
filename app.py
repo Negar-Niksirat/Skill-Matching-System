@@ -8,6 +8,7 @@ from API.summarization import summarize_job_descriptions
 from API.roadmap import generate_learning_roadmap
 from API.skills_process import  skills_process
 import nltk
+import ast
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('punkt_tab')
