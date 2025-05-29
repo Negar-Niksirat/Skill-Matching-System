@@ -9,13 +9,11 @@ def summarize_job_descriptions(job_descriptions: list[str], role_title: str) -> 
     if not job_descriptions:
         return "No job descriptions provided."
 
-    combined_text = "\n\n".join(job_descriptions)
-    prompt = (
-        f"Please combine and summarize the following job descriptions about '{role_title}' "
-        "into a single, clear, and engaging paragraph of maximum 2 sentences. "
-        "Focus on the main responsibilities, goals, and impact of the role in simple, professional language.\n\n"
-        f"{combined_text}"
-    )
+    job_descriptions_text = "\n\n".join(job_descriptions)
+    prompt = ("Summarize the following job descriptions for a "
+          + str(role_title[0]) + " role into a clear, concise summary of no more than three short sentences. "
+          "Only return the summary with no extra text or commentary. Focus on key responsibilities, expected outcomes, and core purpose of the role.\n\n"
+          + job_descriptions_text)
 
     headers = {
         "Authorization": f"Bearer {api_key}",
