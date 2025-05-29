@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("API_KEY")
 
-def skills_process(all_skills_str: str, api_key: str) -> str:
+def skills_process(all_skills_str: str) -> str:
     prompt = "Extract the main keywords from the following list of skills. Only return the keywords in a Python set format. Each keyword should be lowercase, in single quotes, and separated by commas. Do not include extra text, explanations, or symbols. Example output: {'python', 'sql', 'big data'}\n\n"+ all_skills_str
   
     headers = {
