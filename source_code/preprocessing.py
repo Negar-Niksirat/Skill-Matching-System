@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+import pdfplumber
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -27,4 +28,7 @@ def preprocess_text(text):
                 tokens = word_tokenize(text)  
                 return [w for w in tokens if w not in stop_words]
             return tokenize_and_filter(normalized_text)
+def extract_text_from_pdf(uploaded_file):
+      with pdfplumber.open(uploaded_file) as pdf:
+        return "\n".join([page.extract_text() for page in pdf.pages if page.extract_text()])
 
