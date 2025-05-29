@@ -12,8 +12,14 @@ def generate_learning_roadmap(missing_skills: list[str], role_title: str) -> str
 
     skills_text = ", ".join(missing_skills)
     prompt = (
-        f"Please provide a structured and practical roadmap to learn the following skills needed for a '{role_title[0]}' role: "
-        f"{skills_text}. Focus on learning order, resources, and milestones in a beginner-friendly and motivating tone."
+        "Provide a clear and structured learning roadmap for the following skills missing from the user's resume, required for the role of "
+        + str(role_title) + ": "
+        + ", ".join(missing_skills)
+        + ".\n"
+        "For each skill:\n"
+        "- Suggest one high-quality learning resource (course, book, tutorial, etc.)\n"
+        "- Add a brief explanation (1-2 sentences) on what the resource covers and why it's effective.\n"
+        "Do not include any extra commentary, introductions, or conclusions. Just output the roadmap."
     )
 
     headers = {
