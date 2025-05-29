@@ -6,6 +6,7 @@ from source_code.plot import plot_experience_histogram , plot_salary_boxplot , p
 from source_code.semantic_matching import find_most_similar_job_titles
 from API.summarization import summarize_job_descriptions
 from API.roadmap import generate_learning_roadmap
+from API.skills_process import  skills_process
 import nltk
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -62,16 +63,15 @@ if flag== True:
     st.subheader("📝 Summary of Job Descriptions")
     st.write(summary)
 
-    preprocess_skills_list = df_matched_rows['skills'].apply(preprocess_text).tolist()
-    all_skills_set = set()
-    for skills_list in preprocess_skills_list:
-        all_skills_set.update(skills_list)
+    all_skills_str = ", ".join(df_matched_rows['skills'].dropna().astype(str))
+    skills_str = skills_process(all_skills_str)
 
+    all_skills_set = ast.literal_eval(skills_str)
     missing_skills = []
     for skill in all_skills_set:
         if skill not in clean_resume:
             missing_skills.append(skill)
-        
+
     roadmap = generate_learning_roadmap(missing_skills,top_job)
     st.subheader("📝 roadmap for learning")
     st.write(roadmap)
