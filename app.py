@@ -33,11 +33,11 @@ def load_model_and_vectorizer():
 
 model, vectorizer = load_model_and_vectorizer()
 
-st.title("Job Title Prediction")
-resume = st.text_area("Please enter the resume text here:")
-uploaded_file = st.file_uploader("Upload a PDF resume", type="pdf")
+st.title("🔍 Let’s guess your perfect job!")
+resume = st.text_area("Enter the resume text")
+uploaded_file = st.file_uploader("Upload a PDF Resume", type="pdf")
 
-if st.button("Predict Job Titles"):
+if st.button("Predict"):
     if uploaded_file is not None and not resume:
         extracted_text = extract_text_from_pdf(uploaded_file)
         if not extracted_text:
@@ -64,11 +64,11 @@ if st.session_state.flag:
         st.session_state.top_job = predict_top_job(clean_resume)
         st.session_state.best_match_indices = find_most_similar_job_titles(st.session_state.top_job, threshold=0.7)
 
-    st.subheader("Top 3 Job Recommendations:")
+    st.subheader("🎯 Top 3 Job Matches – Just for You!")
     for i, job in enumerate(st.session_state.top_jobs, 1):
         st.write(f"{i}. {job}")
 
-    st.subheader("📊 Exploratory Analysis for Best Match")
+    st.subheader("📊 What the job posts are really saying?")
     plot_experience_histogram(st.session_state.best_match_indices, st.session_state.top_job)
     plot_gender_preference(st.session_state.best_match_indices, st.session_state.top_job)
     plot_salary_boxplot(st.session_state.best_match_indices, st.session_state.top_job)
@@ -79,7 +79,7 @@ if st.session_state.flag:
     if 'summary' not in st.session_state:
         st.session_state.summary = summarize_job_descriptions(df_matched_rows['Job Description'].tolist(), st.session_state.top_job)
 
-    st.subheader("📝 Summary of Job Descriptions")
+    st.subheader("🧾 Job description summary:")
     st.write(st.session_state.summary)
 
     if 'roadmap' not in st.session_state:
@@ -89,12 +89,12 @@ if st.session_state.flag:
         missing_skills = [skill for skill in all_skills_set if skill not in clean_resume]
         st.session_state.roadmap = generate_learning_roadmap(missing_skills, st.session_state.top_job)
 
-    st.subheader("📝 Roadmap for Learning")
+    st.subheader("🧭 Learning roadmap for your future job:")
     st.write(st.session_state.roadmap)
 
 
     st.markdown("---")
-    st.subheader("💬 Ask Anything")
+    st.subheader("💬 Ask me anything!")
 
     with st.form("chat_form", clear_on_submit=True):
         user_input = st.text_input( "",placeholder="Your message")
@@ -113,7 +113,7 @@ if st.session_state.flag:
     st.markdown("### 📜 Conversation")
 
     if  submitted and not user_input.strip():
-        st.error("Type something to ask the AI")
+        st.error("What do you want to ask the AI?")
     elif submitted and user_input.strip():
         st.session_state.chat_history.append(("user", user_input))
         bot_reply = chat_with_chatbot(user_input)
