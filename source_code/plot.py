@@ -44,8 +44,8 @@ def plot_experience_histogram(best_match_indices, predicted_title):
                                     align='left', color='skyblue', edgecolor='black', rwidth=0.8)
     
     ax.set_title(f'Minimum experience for {predicted_title[0]}')
-    ax.set_xlabel('Minimum Required Experience (Years)')
-    ax.set_ylabel('Number of Job Descriptions')
+    ax.set_xlabel('Minimum required experience (year)')
+    ax.set_ylabel('Number of job posts')
     ax.set_xticks(range(min(min_years), max(min_years) + 1))
     
     # تنظیم فاصله محور Y به صورت عدد صحیح
@@ -63,7 +63,7 @@ def plot_gender_preference(best_match_indices, predicted_title):
     gender_counts = df_matched['Preference'].value_counts()
 
     fig, ax = plt.subplots(figsize=(6, 6))
-    ax.pie(gender_counts, labels=gender_counts.index, autopct='%1.1f%%', startangle=140,
+    ax.pie(gender_counts, labels=gender_counts.index, autopct='%5.0f%%', startangle=140,
            colors=['#4e79a7', '#f28e2b', '#76b7b2'])
     ax.set_title(f'Gender preference for {predicted_title[0]}')
     ax.axis('equal')
@@ -73,24 +73,24 @@ def plot_gender_preference(best_match_indices, predicted_title):
 def plot_salary_boxplot(best_match_indices, predicted_title):
     df_job_description[['Min_Salary', 'Max_Salary']] = df_job_description['Salary Range'].apply(lambda x: pd.Series(extract_salary_range(x)))
     df_matched = df_job_description.iloc[best_match_indices]
-    
+
     min_salary = df_matched['Min_Salary'].min()
     max_salary = df_matched['Max_Salary'].max()
     avg_min_salary =df_matched['Min_Salary'].mean()
     avg_max_salary = df_matched['Max_Salary'].mean()
     avg_salary = (avg_min_salary + avg_max_salary) / 2
 
-    fig, ax = plt.subplots(figsize=(8,4))
+    fig, ax = plt.subplots(figsize=(8,2))
     ax.hlines(1, min_salary, max_salary, color='lightgreen', linewidth=6)
     ax.plot([min_salary, avg_salary, max_salary], [1, 1, 1], 'o', color='green')
 
-    ax.text(min_salary, 1.05, f'Min: {min_salary:.0f}', ha='center')
-    ax.text(avg_salary, 0.85, f'Avg: {avg_salary:.0f}', ha='center')
-    ax.text(max_salary, 1.05, f'Max: {max_salary:.0f}', ha='center')
+    ax.text(min_salary, 1.01, f'Min: {min_salary:.0f}', ha='center')
+    ax.text(avg_salary, 1.01, f'Avg: {avg_salary:.0f}', ha='center')
+    ax.text(max_salary, 1.01, f'Max: {max_salary:.0f}', ha='center')
 
     ax.set_yticks([])
-    ax.set_xlabel('Salary')
-    ax.set_title('Salary Range Overview')
+    ax.set_xlabel('')
+    ax.set_title(f'Salary range overview for {predicted_title[0]}  ($)')
     plt.tight_layout()
     st.pyplot(fig)
 
