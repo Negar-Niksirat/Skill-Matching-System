@@ -121,10 +121,10 @@ if st.session_state.flag:
         
         for role, message in st.session_state.chat_history:
             if role == "user":
-                chat_html += f"<p style='color: blue; margin: 4px 0;'><b>🧑 You:</b></p><pre style='color: blue;'>{message}</pre>"
+                chat_html += f"<p style='color: #52B2CF; margin: 4px 0;'><b>🧑 You:</b></p><pre style='color: #313D5A;'>{message}</pre>"
 
             else:
-                chat_html += f"<p style='color: green; margin: 4px 0;'><b>🤖 Assistant:</b></p><pre style='color: green;'>{message}</pre>"
+                chat_html += f"<p style='color: #AB90CE; margin: 4px 0;'><b>🤖 Assistant:</b></p><pre style='color: #73628A;'>{message}</pre>"
 
     chat_html += "</div>"
     components.html(chat_html, height=320, scrolling=False)
