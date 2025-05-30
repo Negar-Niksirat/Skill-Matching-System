@@ -31,12 +31,15 @@ activate</pre>
 با محیط مجازی فعال در پوشه cangrow2_final که فایل requirements.txt قرار دارد، دستور زیر را اجرا کنید:  
 
 <pre>pip install -r requirements.txt</pre>
+5.تنظیم API Key  
+برای اتصال به API هوش مصنوعی، از سایت https://openrouter.ai/settings/keys یک API Key دریافت کنید. سپس در پوشه‌ی پروژه، فایل env. را ایجاد کرده و کلید را وارد نمایید:
+<pre>echo API_KEY=yourAPIKey >> .env</pre>
 
-5.اجرای فایل آموزش مدل  
+6.اجرای فایل آموزش مدل  
 در پوشه cangrow2_final بروید و اسکریپت آموزش مدل را اجرا کنید:  
 
 <pre>python -m source_code.train_model</pre>
-6.اجرای رابط کاربری  
+7.اجرای رابط کاربری  
 برای اجرای رابط گرافیکی برنامه با Streamlit، دستور زیر را وارد کنید:  
 
 <pre>streamlit run app.py</pre>
