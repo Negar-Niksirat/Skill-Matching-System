@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import re
 import pandas as pd
 import streamlit as st
+import numpy as np
 
 df_job_description = load_data('data/Job-Description-Dataset.csv')
 
@@ -32,20 +33,27 @@ def extract_years(experience):
 
 
 
+
 def plot_experience_histogram(best_match_indices, predicted_title):
     df_job_description[['Min_Years', 'Max_Years']] = df_job_description['Experience'].apply(lambda x: pd.Series(extract_years(x)))
     df_matched_rows = df_job_description.iloc[best_match_indices].reset_index(drop=True)
     min_years = df_matched_rows['Min_Years'].astype(int)
-
+    
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.hist(min_years, bins=range(min(min_years), max(min_years) + 2), align='left',
-            color='skyblue', edgecolor='black', rwidth=0.8)
+    counts, bins, patches = ax.hist(min_years, bins=range(min(min_years), max(min_years) + 2), 
+                                    align='left', color='skyblue', edgecolor='black', rwidth=0.8)
+    
     ax.set_title(f'Minimum experience for {predicted_title[0]}')
     ax.set_xlabel('Minimum Required Experience (Years)')
     ax.set_ylabel('Number of Job Descriptions')
     ax.set_xticks(range(min(min_years), max(min_years) + 1))
+    
+    # تنظیم فاصله محور Y به صورت عدد صحیح
+    ax.set_yticks(np.arange(0, max(counts)+1, 1))
+    
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     st.pyplot(fig)
+
 
    
 
@@ -66,15 +74,25 @@ def plot_salary_boxplot(best_match_indices, predicted_title):
     df_job_description[['Min_Salary', 'Max_Salary']] = df_job_description['Salary Range'].apply(lambda x: pd.Series(extract_salary_range(x)))
     df_matched = df_job_description.iloc[best_match_indices]
     
-    data = [df_matched['Min_Salary'].astype(float), df_matched['Max_Salary'].astype(float)]
-    
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.boxplot(data, patch_artist=True,
-               tick_labels=['Min Salary', 'Max Salary'],
-               boxprops=dict(facecolor='purple'))
-    ax.set_title(f'Salary distribution for {predicted_title[0]}')
-    ax.set_ylabel('Salary')
-    ax.grid(axis='y', linestyle='--', alpha=0.5)
+    min_salary = df_matched['Min_Salary'].min()
+    max_salary = df_matched['Max_Salary'].max()
+    avg_min_salary =df_matched['Min_Salary'].mean()
+    avg_max_salary = df_matched['Max_Salary'].mean()
+    avg_salary = (avg_min_salary + avg_max_salary) / 2
+
+    fig, ax = plt.subplots(figsize=(8,4))
+    ax.hlines(1, min_salary, max_salary, color='lightgreen', linewidth=6)
+    ax.plot([min_salary, avg_salary, max_salary], [1, 1, 1], 'o', color='green')
+
+    ax.text(min_salary, 1.05, f'Min: {min_salary:.0f}', ha='center')
+    ax.text(avg_salary, 0.85, f'Avg: {avg_salary:.0f}', ha='center')
+    ax.text(max_salary, 1.05, f'Max: {max_salary:.0f}', ha='center')
+
+    ax.set_yticks([])
+    ax.set_xlabel('Salary')
+    ax.set_title('Salary Range Overview')
+    plt.tight_layout()
     st.pyplot(fig)
+
 
 
