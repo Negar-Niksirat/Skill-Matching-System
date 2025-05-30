@@ -55,51 +55,54 @@ if st.button("Predict"):
 
 if st.session_state.flag:
     clean_resume = normalize_text(st.session_state.resume_text)
+    if(len(clean_resume.strip())==0):
+        st.error("Your input is invalid.")
+    else:
 
     
-    if 'top_jobs' not in st.session_state:
-        st.session_state.top_jobs = predict_3_top_job(clean_resume)
+        if 'top_jobs' not in st.session_state:
+            st.session_state.top_jobs = predict_3_top_job(clean_resume)
 
-    if 'top_job' not in st.session_state:
-        st.session_state.top_job = predict_top_job(clean_resume)
-        st.session_state.best_match_indices = find_most_similar_job_titles(st.session_state.top_job, threshold=0.7)
+            if 'top_job' not in st.session_state:
+                st.session_state.top_job = predict_top_job(clean_resume)
+                st.session_state.best_match_indices = find_most_similar_job_titles(st.session_state.top_job, threshold=0.7)
 
-    st.subheader("🎯 Top 3 Job Matches – Just for You!")
-    for i, job in enumerate(st.session_state.top_jobs, 1):
-        st.write(f"{i}. {job}")
+        st.subheader("🎯 Top 3 Job Matches – Just for You!")
+        for i, job in enumerate(st.session_state.top_jobs, 1):
+            st.write(f"{i}. {job}")
 
-    st.subheader("📊 What the job posts are really saying?")
-    plot_experience_histogram(st.session_state.best_match_indices, st.session_state.top_job)
-    plot_gender_preference(st.session_state.best_match_indices, st.session_state.top_job)
-    plot_salary_boxplot(st.session_state.best_match_indices, st.session_state.top_job)
+        st.subheader("📊 What the job posts are really saying?")
+        plot_experience_histogram(st.session_state.best_match_indices, st.session_state.top_job)
+        plot_gender_preference(st.session_state.best_match_indices, st.session_state.top_job)
+        plot_salary_boxplot(st.session_state.best_match_indices, st.session_state.top_job)
 
-    df_job_description = load_data('data/Job-Description-Dataset.csv')
-    df_matched_rows = df_job_description.iloc[st.session_state.best_match_indices].reset_index(drop=True)
+        df_job_description = load_data('data/Job-Description-Dataset.csv')
+        df_matched_rows = df_job_description.iloc[st.session_state.best_match_indices].reset_index(drop=True)
 
-    if 'summary' not in st.session_state:
-        st.session_state.summary = summarize_job_descriptions(df_matched_rows['Job Description'].tolist(), st.session_state.top_job)
+        if 'summary' not in st.session_state:
+            st.session_state.summary = summarize_job_descriptions(df_matched_rows['Job Description'].tolist(), st.session_state.top_job)
 
-    st.subheader("🧾 Job description summary:")
-    st.write(st.session_state.summary)
+        st.subheader("🧾 Job description summary:")
+        st.write(st.session_state.summary)
 
-    if 'roadmap' not in st.session_state:
-        all_skills_str = ", ".join(df_matched_rows['skills'].dropna().astype(str))
-        skills_str = skills_process(all_skills_str)
-        all_skills_set = ast.literal_eval(skills_str)
-        missing_skills = [skill for skill in all_skills_set if skill not in clean_resume]
-        st.session_state.roadmap = generate_learning_roadmap(missing_skills, st.session_state.top_job)
+        if 'roadmap' not in st.session_state:
+            all_skills_str = ", ".join(df_matched_rows['skills'].dropna().astype(str))
+            skills_str = skills_process(all_skills_str)
+            all_skills_set = ast.literal_eval(skills_str)
+            missing_skills = [skill for skill in all_skills_set if skill not in clean_resume]
+            st.session_state.roadmap = generate_learning_roadmap(missing_skills, st.session_state.top_job)
 
-    st.subheader("🧭 Learning roadmap for your future job:")
-    st.write(st.session_state.roadmap)
+        st.subheader("🧭 Learning roadmap for your future job:")
+        st.write(st.session_state.roadmap)
 
 
-    st.markdown("---")
-    st.subheader("💬 Ask me anything!")
+        st.markdown("---")
+        st.subheader("💬 Ask me anything!")
 
-    with st.form("chat_form", clear_on_submit=True):
-        user_input = st.text_input( "",placeholder="Your message")
-        submitted = st.form_submit_button("Send")
-    chat_html = """
+        with st.form("chat_form", clear_on_submit=True):
+            user_input = st.text_input( "",placeholder="Your message")
+            submitted = st.form_submit_button("Send")
+        chat_html = """
     <div style="
     height: 300px; 
     overflow-y: auto; 
@@ -110,22 +113,22 @@ if st.session_state.flag:
     ">
     """
 
-    st.markdown("### 📜 Conversation")
+        st.markdown("### 📜 Conversation")
 
-    if  submitted and not user_input.strip():
-        st.error("What do you want to ask the AI?")
-    elif submitted and user_input.strip():
-        st.session_state.chat_history.append(("user", user_input))
-        bot_reply = chat_with_chatbot(user_input)
-        st.session_state.chat_history.append(("assistant", bot_reply))
+        if  submitted and not user_input.strip():
+            st.error("What do you want to ask the AI?")
+        elif submitted and user_input.strip():
+            st.session_state.chat_history.append(("user", user_input))
+            bot_reply = chat_with_chatbot(user_input)
+            st.session_state.chat_history.append(("assistant", bot_reply))
         
-        for role, message in st.session_state.chat_history:
-            if role == "user":
-                chat_html += f"<p style='color: #52B2CF; margin: 4px 0;'><b>🧑 You:</b></p><pre style='color: #313D5A;'>{message}</pre>"
+            for role, message in st.session_state.chat_history:
+                if role == "user":
+                    chat_html += f"<p style='color: #52B2CF; margin: 4px 0;'><b>🧑 You:</b></p><pre style='color: #313D5A;'>{message}</pre>"
 
-            else:
-                chat_html += f"<p style='color: #AB90CE; margin: 4px 0;'><b>🤖 Assistant:</b></p><pre style='color: #73628A;'>{message}</pre>"
+                else:
+                    chat_html += f"<p style='color: #AB90CE; margin: 4px 0;'><b>🤖 Assistant:</b></p><pre style='color: #73628A;'>{message}</pre>"
 
-    chat_html += "</div>"
-    components.html(chat_html, height=320, scrolling=False)
+        chat_html += "</div>"
+        components.html(chat_html, height=320, scrolling=False)
     
