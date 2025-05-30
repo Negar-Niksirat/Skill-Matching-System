@@ -41,7 +41,7 @@ def plot_experience_histogram(best_match_indices, predicted_title):
     
     fig, ax = plt.subplots(figsize=(6, 4))
     counts, bins, patches = ax.hist(min_years, bins=range(min(min_years), max(min_years) + 2), 
-                                    align='left', color='skyblue', edgecolor='black', rwidth=0.8)
+                                    align='left', color='#73628A', edgecolor='black', rwidth=0.8)
     
     ax.set_title(f'Minimum experience for {predicted_title[0]}')
     ax.set_xlabel('Minimum required experience (year)')
@@ -64,7 +64,7 @@ def plot_gender_preference(best_match_indices, predicted_title):
 
     fig, ax = plt.subplots(figsize=(6, 6))
     ax.pie(gender_counts, labels=gender_counts.index, autopct='%5.0f%%', startangle=140,
-           colors=['#4e79a7', '#f28e2b', '#76b7b2'])
+           colors=['#52B2CF', '#7EC4CF', '#D1CFE2'])
     ax.set_title(f'Gender preference for {predicted_title[0]}')
     ax.axis('equal')
     st.pyplot(fig)
@@ -81,8 +81,8 @@ def plot_salary_boxplot(best_match_indices, predicted_title):
     avg_salary = (avg_min_salary + avg_max_salary) / 2
 
     fig, ax = plt.subplots(figsize=(8,2))
-    ax.hlines(1, min_salary, max_salary, color='lightgreen', linewidth=6)
-    ax.plot([min_salary, avg_salary, max_salary], [1, 1, 1], 'o', color='green')
+    ax.hlines(1, min_salary, max_salary, color='#D1CFE2', linewidth=6)
+    ax.plot([min_salary, avg_salary, max_salary], [1, 1, 1], 'o', color='#73628A')
 
     ax.text(min_salary, 1.01, f'Min: {min_salary:.0f}', ha='center')
     ax.text(avg_salary, 1.01, f'Avg: {avg_salary:.0f}', ha='center')
