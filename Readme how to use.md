@@ -18,7 +18,7 @@
 2.کلون کردن ریپازیتوری نهایی  
 با Git Bash وارد پوشه شوید و ریپازیتوری Skill-Matching-System را clone کنید:  
 <pre>cd folderName 
-git clone https://github.com/Negar-Niksirat/cangrow2_final.git</pre>
+git clone https://github.com/Negar-Niksirat/Skill-Matching-System.git
 3.ساخت و فعال‌سازی محیط مجازی  
 در CMD دستور زیر را اجرا کنید:  
 <pre>cd folderName
